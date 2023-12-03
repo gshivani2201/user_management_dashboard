@@ -135,60 +135,65 @@ function Table() {
                   (currentPage - 1) * rowsInAPage,
                   currentPage * rowsInAPage
                 )
-                .map((data_item, index) => (
-                  <tr key={index}>
-                    <td className="primary-text" style={{ width: "10%" }}>
-                      {/* calculate SL no. by subtracting 1 from currentPage, multiplied by rowsInAPage */}
-                      {/* then,  adding index + 1 to result */}
-                      {(currentPage - 1) * rowsInAPage + index + 1}
-                    </td>
-                    <td className="primary-text" style={{ width: "20%" }}>
-                      {data_item.name || "-"}
-                    </td>
-                    <td className="primary-text" style={{ width: "10%" }}>
-                      {data_item.age || "-"}
-                    </td>
-                    <td className="primary-text" style={{ width: "20%" }}>
-                      {data_item.city || "-"}
-                    </td>
-                    <td className="primary-text" style={{ width: "15%" }}>
-                      {data_item.pinCode || "-"}
-                    </td>
-                    <td>
-                      <div className="action-btns">
-                        <button
-                          className="btn edit capitalize"
-                          onClick={() =>
-                            setModalConfig({
-                              status: true,
-                              config: {
-                                name: data_item.name || "-",
-                                index: index,
-                              },
-                              action_type: "edit",
-                            })
-                          }
-                        >
-                          edit
-                        </button>
-                        <button
-                          className="btn delete capitalize"
-                          onClick={() =>
-                            setModalConfig({
-                              status: true,
-                              config: {
-                                row_number: index + 1,
-                              },
-                              action_type: "delete",
-                            })
-                          }
-                        >
-                          delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                .map((data_item, index) => {
+                  // calculate index no. by subtracting 1 from currentPage,
+                  // multiplied by rowsInAPage
+                  // then, adding index + 1 to result
+                  const dataItemIndex =
+                    (currentPage - 1) * rowsInAPage + index + 1;
+                  return (
+                    <tr key={dataItemIndex}>
+                      <td className="primary-text" style={{ width: "10%" }}>
+                        {dataItemIndex}
+                      </td>
+                      <td className="primary-text" style={{ width: "20%" }}>
+                        {data_item.name || "-"}
+                      </td>
+                      <td className="primary-text" style={{ width: "10%" }}>
+                        {data_item.age || "-"}
+                      </td>
+                      <td className="primary-text" style={{ width: "20%" }}>
+                        {data_item.city || "-"}
+                      </td>
+                      <td className="primary-text" style={{ width: "15%" }}>
+                        {data_item.pinCode || "-"}
+                      </td>
+                      <td>
+                        <div className="action-btns">
+                          <button
+                            className="btn edit capitalize"
+                            onClick={() =>
+                              setModalConfig({
+                                status: true,
+                                config: {
+                                  name: data_item.name || "-",
+                                  index: dataItemIndex - 1,
+                                },
+                                action_type: "edit",
+                              })
+                            }
+                          >
+                            edit
+                          </button>
+                          <button
+                            className="btn delete capitalize"
+                            onClick={() =>
+                              setModalConfig({
+                                status: true,
+                                config: {
+                                  row_number: dataItemIndex,
+                                },
+                                action_type: "delete",
+                              })
+                            }
+                          >
+                            delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         )}
