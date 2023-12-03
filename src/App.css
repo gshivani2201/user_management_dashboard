@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
 }
 
 .App-logo {
@@ -35,4 +37,49 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* headings */
+.main-heading {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.primary-heading {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.primary-text {
+  font-size: 14px;
+}
+
+/* text styles */
+.capitalize {
+  text-transform: capitalize;
+}
+
+/* button styles */
+.btn {
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.5s;
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* colors */
+.crimson {
+  color: crimson;
 }
