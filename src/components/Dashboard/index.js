@@ -6,7 +6,7 @@ import "./style.css";
 // child components
 import Modal from "../_common/Modal";
 
-function Table() {
+function Dashboard() {
   const rowsInAPage = 11;
   const [userData, setUserData] = useState({
     loader: false,
@@ -217,7 +217,7 @@ function Table() {
   );
 }
 
-export default Table;
+export default Dashboard;
 
 const Pagination = ({ currentPage, setCurrentPage, lastPage }) => {
   return (

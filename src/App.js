@@ -14,7 +14,7 @@ import {
 // child components
 import Header from "./components/Header";
 import Login from "./components/Login";
-import Table from "./components/Table";
+import Dashboard from "./components/Dashboard";
 
 if (getLoginStatus() === undefined || getLoginStatus() === null) {
   setLoginStatus(false);
@@ -55,7 +55,7 @@ function App() {
         user={user}
       />
       {isLoggedIn ? (
-        <Table />
+        <Dashboard />
       ) : (
         <Login
           loginHandler={() => toggleLogin()}
