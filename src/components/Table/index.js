@@ -7,6 +7,7 @@ import "./style.css";
 import Modal from "../_common/Modal";
 
 function Table() {
+  const rowsInAPage = 11;
   const [userData, setUserData] = useState({
     loader: false,
     data: [],
@@ -17,6 +18,7 @@ function Table() {
     config: { name: "abc", index: 0, row_number: 3 },
     action_type: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setUserData({
@@ -116,61 +118,86 @@ function Table() {
               </tr>
             </thead>
 
-            <tbody>
-              {userData.data.map((data_item, index) => (
-                <tr key={index}>
-                  <td className="primary-text" style={{ width: "10%" }}>
-                    {index + 1}
-                  </td>
-                  <td className="primary-text" style={{ width: "20%" }}>
-                    {data_item.name || "-"}
-                  </td>
-                  <td className="primary-text" style={{ width: "10%" }}>
-                    {data_item.age || "-"}
-                  </td>
-                  <td className="primary-text" style={{ width: "20%" }}>
-                    {data_item.city || "-"}
-                  </td>
-                  <td className="primary-text" style={{ width: "15%" }}>
-                    {data_item.pinCode || "-"}
-                  </td>
-                  <td>
-                    <div className="action-btns">
-                      <button
-                        className="btn edit capitalize"
-                        onClick={() =>
-                          setModalConfig({
-                            status: true,
-                            config: {
-                              name: data_item.name || "-",
-                              index: index,
-                            },
-                            action_type: "edit",
-                          })
-                        }
-                      >
-                        edit
-                      </button>
-                      <button
-                        className="btn delete capitalize"
-                        onClick={() =>
-                          setModalConfig({
-                            status: true,
-                            config: {
-                              row_number: index + 1,
-                            },
-                            action_type: "delete",
-                          })
-                        }
-                      >
-                        delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+            <tbody
+              style={{
+                maxHeight:
+                  userData.data.length > rowsInAPage
+                    ? "calc(100vh - 259px)"
+                    : "900px",
+              }}
+            >
+              {userData.data
+                // splice "start" -> by subtracting 1 from currentPage
+                // and multiplying the result by rowsInAPage,
+
+                // splice "end" -> current page multiplied by rowsInAPage
+                .slice(
+                  (currentPage - 1) * rowsInAPage,
+                  currentPage * rowsInAPage
+                )
+                .map((data_item, index) => (
+                  <tr key={index}>
+                    <td className="primary-text" style={{ width: "10%" }}>
+                      {/* calculate SL no. by subtracting 1 from currentPage, multiplied by rowsInAPage */}
+                      {/* then,  adding index + 1 to result */}
+                      {(currentPage - 1) * rowsInAPage + index + 1}
+                    </td>
+                    <td className="primary-text" style={{ width: "20%" }}>
+                      {data_item.name || "-"}
+                    </td>
+                    <td className="primary-text" style={{ width: "10%" }}>
+                      {data_item.age || "-"}
+                    </td>
+                    <td className="primary-text" style={{ width: "20%" }}>
+                      {data_item.city || "-"}
+                    </td>
+                    <td className="primary-text" style={{ width: "15%" }}>
+                      {data_item.pinCode || "-"}
+                    </td>
+                    <td>
+                      <div className="action-btns">
+                        <button
+                          className="btn edit capitalize"
+                          onClick={() =>
+                            setModalConfig({
+                              status: true,
+                              config: {
+                                name: data_item.name || "-",
+                                index: index,
+                              },
+                              action_type: "edit",
+                            })
+                          }
+                        >
+                          edit
+                        </button>
+                        <button
+                          className="btn delete capitalize"
+                          onClick={() =>
+                            setModalConfig({
+                              status: true,
+                              config: {
+                                row_number: index + 1,
+                              },
+                              action_type: "delete",
+                            })
+                          }
+                        >
+                          delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
+        )}
+        {userData.data.length > rowsInAPage && (
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={Math.ceil(userData.data.length / rowsInAPage)}
+          />
         )}
       </div>
       {modalConfig.status && (
@@ -186,3 +213,27 @@ function Table() {
 }
 
 export default Table;
+
+const Pagination = ({ currentPage, setCurrentPage, lastPage }) => {
+  return (
+    <div className="pagination-container">
+      <div className="pagination-buttons">
+        <button
+          className="btn"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
+        <div className="current-page-num">{currentPage}</div>
+        <button
+          className="btn"
+          disabled={currentPage === lastPage}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
